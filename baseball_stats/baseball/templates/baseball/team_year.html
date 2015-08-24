@@ -1,0 +1,97 @@
+{% extends "baseball/base.html" %}
+{% load humanize %}
+{% block content %}
+<h2>{{ team.year }} {{ team.team_name }}</h2>
+<h3>{{ team.park_name }} {{ team.attendance|intcomma }} attendance</h3>
+<a href="{% url 'teams' team.year %}">{{ team.league }} {{ team.division }} W {{ team.wins }} L {{team.losses }} {{ team.rank|ordinal }} place</a>
+{% if team.won_wildcard %}Won Wildcard{% endif %}
+{% if team.won_division %}Won Division{% endif %}
+{% if team.won_pennant %}Won Pennant{% endif %}
+{% if team.won_world_series %}Won World Series{% endif %}
+<h3>Team Totals</h3>
+<h4>Offense</h4>
+<table class="table table-striped">
+    <tr>
+        <th>Runs</th><th>At bats</th><th>Hits</th><th>Doubles</th><th>Triples</th><th>Home Runs</th>
+        <th>Walks</th><th>Strikeouts</th><th>Stolen Bases</th><th>Caught Stealing</th><th>Hit by Pitch</th>
+        <th>Sac Flies</th>
+    </tr>
+    <tr>
+        <td>{{ team.runs }}</td><td>{{ team.at_bats }}</td><td>{{ team.hits }}</td><td>{{ team.doubles }}</td>
+        <td>{{ team.triples }}</td><td>{{ team.home_runs }}</td><td>{{team.walks }}</td><td>{{ team.strike_outs}}</td>
+        <td>{{ team.stolen_bases }}</td><td>{{ team.caught_stealing }}</td><td>{{ team.hit_by_pitch }}</td>
+        <td>{{ team.sac_fly }}</td>
+    </tr>
+</table>
+<h4>Defense/Pitching</h4 >
+<table class="table table-striped">
+    <tr>
+<th>Runs Allowed</th>
+<th>Earned Runs</th>
+<th>ERA</th>
+<th>Complete Games</th>
+<th>Shutouts</th>
+<th>Saves</th>
+<th>Outs Pitched</th>
+<th>Hits Allowed</th>
+<th>Home Runs</th>
+<th>Walks</th>
+<th>Strikeouts</th>
+<th>Errors</th>
+<th>Double Plays</th>
+<th>Fielding %</th>
+</tr>
+<tr>
+    <td>{{ team.opponent_runs }}</td>
+    <td>{{ team.earn_runs_allowed }}</td>
+    <td>{{ team.earned_run_average }}</td>
+    <td>{{ team.complete_games}}</td>
+    <td>{{ team.shutouts}}</td>
+    <td>{{ team.saves }}</td>
+    <td>{{ team.outs_pitched}}</td>
+    <td>{{ team.hits_allowed }}</td>
+    <td>{{ team.homeruns_allowed}}</td>
+    <td>{{ team.walks_allowed}}</td>
+    <td>{{ team.opposing_strikeouts }}</td>
+    <td>{{ team.errors}} </td>
+    <td>{{ team.double_plays }}</td>
+    <td>{{ team.fielding_percentage }}</td>
+</table>
+
+<h3>Pitchers</h3>
+<table class="table table-striped">
+    <tr><th>Player</th><th>Games Started</th><th>Games</th><th>Complete Games</th><th>Wins</th><th>Losses</th><th>Saves</th></tr>
+{% for p in pitching %}
+<tr><td><a href="{% url 'baseball.views.player_card' player_id=p.player_id %}">{{ p }}</a></td>
+    <td>{{ p.games_started }}</td>
+    <td>{{ p.games }}</td>
+    <td>{{ p.complete_games }}</td>
+    <td>{{ p.wins }}</td>
+    <td>{{ p.losses }}</td>
+    <td>{{ p.saves }}</td>
+</tr>
+{% endfor %}
+</table>
+<h3>Batting</h3>
+<table class="table table-striped">
+    <tr><th>Player</th><th>At Bats</th><th>Runs</th><th>Hits</th><th>Doubles</th><th>Triples</th><th>Home Runs</th></tr>
+{% for b in batting%}
+<tr><td><a href="{% url 'baseball.views.player_card' player_id=b.player_id %}">{{ b }}</a></td>
+    <td>{{ b.at_bats }}</td>
+    <td>{{ b.runs }}</td>
+    <td>{{ b.hits }}</td>
+    <td>{{ b.doubles }}</td>
+    <td>{{ b.triples }}</td>
+    <td>{{ b.homeruns }}</td>
+</tr>
+{% endfor %}
+</table>
+<h3>Fielding</h3>
+<table class="table table-striped">
+{% for f in fielding%}
+<tr>
+    <td><a href="{% url 'baseball.views.player_card' player_id=f.player_id %}">{{ f }}</a></td>
+<tr>
+{% endfor %}
+</table>
+{% endblock %}

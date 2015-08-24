@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Most Hits in a Season -- {{ year }}</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Hits</th>
+    <th>At Bats</th>
+    <th>Average</th>
+    </tr>
+    {% for p in batting %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player_id}}">{{ p }}</a></td><td> {{p.hits }}</td><td>{{ p.at_bats }}</td><td>{{ p.average| floatformat:3 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Most Home Runs in a Season -- {{ year }}</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Homeruns</th>
+    </tr>
+    {% for p in home_runs %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player_id}}">{{ p }}</a></td><td>{{p.homeruns}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Most Hits All Time</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Hits</th>
+    </tr>
+    {% for p in hits %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h2>Most Doubles All Time</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Doubles</th>
+    </tr>
+    {% for p in doubles %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h2>Most Triples All Time</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Triples</th>
+    </tr>
+    {% for p in triples %}
+    <tr>
+    <td><a href="/stats/player_card/{{ p.player }}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h2>Most Home Runs All Time</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Homeruns</th>
+    </tr>
+    {% for p in home_runs_all_time %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player }}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Most RBIs All Time</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>RBIs</th>
+    </tr>
+    {% for p in rbi_all_time %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h2>Most Home Runs by Year</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Homeruns</th>
+    <th>Year</th>
+    </tr>
+    {% for p in top_hr_by_year %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h2>Most Stolen Bases All Time</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Steals</th>
+    </tr>
+    {% for p in stolen_bases %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Most Hit by Pitch All Time</h2>
+<table class='table'>
+    <tr>
+    <th>Name</th>
+    <th>hbp</th>
+    </tr>
+    {% for p in hit_by_pitch %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td><td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Most Walks All Time</h2>
+<table class-'table'>
+    <tr>
+    <th>Name</th>
+    <th>Walks</th>
+    </tr>
+    {% for p in all_time_walks %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player}}">{{ p.player__name_first}} {{ p.player__name_last }}</a></td>
+    <td>{{p.category}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2> Top Batting Average in a Season -- {{ year }}</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Hits</th>
+    <th>Plate Appearances</th>
+    <th>Average</th>
+    </tr>
+    {% for p in average %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player_id}}">{{ p }}</a></td><td> {{p.hits }}</td><td>{{ p.at_bats}}</td>
+    <td>{{ p.average|floatformat:3 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Top All Time Batting Averages</h2>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Hits</th>
+    <th>Plate Appearances</th>
+    <th>Average</th>
+    <th>Year</th>
+    </tr>
+    {% for p in average_ever %}
+    <tr>
+    <td><a href="/stats/player_card/{{p.player_id}}">{{ p }}</a></td><td> {{p.hits }}</td><td>{{ p.at_bats}}</td><td>{{ p.average|floatformat:3 }}</td><td>{{ p.year }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

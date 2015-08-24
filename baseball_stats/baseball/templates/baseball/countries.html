@@ -1,0 +1,19 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+<h2>Countries with Players in Baseball</h2>
+<form action="" method="GET>
+    {{ form }}
+     <input type = "submit" value = "Submit">
+</form>
+<table class='table table-striped'>
+    <tr>
+    <th>Country</th>
+    <th>Number of Players</th>
+    </tr>
+    {% for c in countries %}
+    <tr>
+        <td><a href="{% url 'players' %}?birth_country={{c.birth_country }}">{{ c.birth_country }}</td><td>{{ c.num_players }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

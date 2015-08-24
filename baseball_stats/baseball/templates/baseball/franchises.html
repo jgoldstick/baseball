@@ -1,0 +1,10 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+<h2>Franchises</h2>
+    <table class="table table-striped">
+    <tr><th>ID</th><th>Franchise</th></tr>
+    {% for f in franchises %}
+    <tr><td><a href="{% url 'team_history' f.id %}">{{ f.id }}</a></td><td>{{ f.name }}</td></tr>
+    {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,31 @@
+index
+top 20s
+    games played
+    pitching games started
+    pitching innings pitched
+    pitching winning percentage
+    strikeouts - career
+    strikeouts in a season
+    saves
+    batting average
+    batting average in a season
+    hits
+    stolen bases
+    all star appearances
+    hall of fame percentage voted in
+teams
+    list of teams
+    rosters by team and year
+    record by year and position in standings
+    standings by year
+     
+players
+    pitching
+    batting
+    fielding
+    
+post season
+hall of fame
+schools
+about
+

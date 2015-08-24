@@ -1,0 +1,21 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+<p>The following were born on {{ birthday }}. For another date select here: <p>
+<form action = "" method = "GET">
+    {{ form }}
+    <input type = "submit" value = "Submit">
+</form>
+
+<table class='table table-striped'>
+    <tr>
+    <th>Name</th>
+    <th>Born</th>
+    <th>Died</th>
+    </tr>
+    {% for p in born_this_date %}
+    <tr>
+        <td><a href = "{% url 'player_card' p.id %}">{{ p }}</a></td><td> {{ p.birth_year }}</td><td>{{ p.death_year }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

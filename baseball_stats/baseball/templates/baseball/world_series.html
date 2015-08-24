@@ -1,0 +1,14 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+
+<table class="table table-striped">
+    <tr>
+        <th>Year</th><th>Winner</th><th>Loser</th><th>Results</th>
+    </tr>
+{% for ws in world_series %}
+<tr><td><a href="http://m.mlb.com/postseason/history{{ ws.year }}" target="_blank">{{ ws.year }}</a>&nbsp </td>
+    <td><a href="{% url 'baseball.views.team_year' team_id=ws.team_winner_id %}">{{ ws.team_winner }} ({{ ws.league_winner }}) </td>
+    <td><a href="{% url 'baseball.views.team_year' team_id=ws.team_loser_id %}">{{ ws.team_loser }} ({{ ws.league_loser }})</a></td><td>{{ ws.wins }} - {{ ws.losses }}{% if ws.ties %} - {{ ws.ties }}{% endif %}</tr> 
+{% endfor %}
+</table>
+{% endblock %}

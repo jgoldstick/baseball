@@ -1,0 +1,18 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+<h2>Top Hall of Fame by Vote Percentage</h2>
+<table class='table table-striped'>
+    <tr>
+    <th>Name</th>
+    <th>% Vote</th>
+    <th>Year</th>
+    <th>Category</th>
+    </tr>
+    {% for p in hall %}
+    <tr>
+        <td><a href = "{% url 'player_card' p.player_id %}">{{ p }}</a></td>
+    <td>{{p.percent_vote|floatformat:3 }}</td><td>{{p.year}}</td><td>{{ p.category }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+
+<h2>Player card for <a href="https://en.wikipedia.org/wiki/{{ player.name_first}}_{{ player.name_last }}" target="_blank">{{ player.name_first }} {{player.name_last }} ({{player.name_given}})</a></h2>
+<h3>Born: {{ born }} in {{ player.birth_city }} {{ player.birth_state }}, {{ player.birth_country }}
+{% if player.death_year %}
+Died: {{ death }}
+{% endif %}
+</h3>
+{% if hall %}
+    <p>Hall of Fame member voted by {{ hall.voted_by }} in {{ hall.year }}
+{% endif %}
+
+{% if pitching %}
+<h3>Pitching</h3>
+<table class='table table-striped'>
+    <tr>
+    <th>Year - Team</th>
+    <th>League</th>
+    <th>Games Played</th>
+    <th>Wins</th>
+    <th>Losses</th>
+    <th>Games Started</th>
+    <th>Complete Games</th>
+    <th>Shutouts</th>
+    <th>Saves</th>
+    <th>Outs Pitched</th>
+    <th>Innings Pitched</th>
+    <th>Hits</th>
+    <th>Earned Runs</th>
+    <th>Home Runs</th>
+    <th>Strikeouts</th>
+    <th>Walks</th>
+    <th>Intentional Walks</th>
+    <th>ERA</th>
+    <th>Wild Pitches</th>
+    <th>Sac Flies</th>
+    <th>Sac Allowed</th>
+    <th>Batters Faces</th>
+    <th>Games Finished</th>
+    <th></th>
+    </tr>
+    {% for p in pitching %}
+    <tr>
+        <td><a href="{% url 'team_year' p.team_id %}">{{ p.year }} {{ p.team }}</a></td>
+        <td>{{ p.league }}</td><td>{{ p.games }}</td>
+    <td>{{ p.wins }}</td><td>{{ p.losses }}</td><td>{{ p.games_started}}</td>
+    <td>{{ p.complete_games }}</td><td>{{ p.shutouts }}</td>
+    <td>{{ p.saves }}</td><td>{{ p.outs_pitched }}</td><td>{{ p.innings_pitched }}</td>
+    <td>{{ p.hits }}</td><td>{{ p.earned_runs }}</td>
+    <td>{{ p.homeruns }}</td><td>{{ p.strikeouts }}</td><td>{{ p.walks }}</td>
+    <td>{{ p.intentional_walks }}</td><td>{{ p.earned_run_average|floatformat:2  }}</td>
+    <td>{{ p.wild_pitches }}</td><td>{{ p.sac_flies }}</td><td>{{ p.sacs_allowed}}</td>
+    <td>{{ p.batters_faced}}</td><td>{{ p.games_finished}}</td>
+    </tr>
+   {% endfor %}
+   <tr><td>Totals</td><td></td><td>{{ pitching_totals.games__sum }}</td>
+    <td>{{ pitching_totals.wins__sum }}</td><td>{{ pitching_totals.losses__sum }}</td>
+    <td>{{ pitching_totals.games_started__sum }}</td>
+    <td>{{ pitching_totals.complete_games__sum }}</td><td>{{ pitching_totals.shutouts__sum }}</td>
+    <td>{{ pitching_totals.saves__sum }}</td>
+    <td>{{ pitching_totals.outs_pitched__sum}}</td><td>{{ pitching_totals.innings_pitched }}</td><td>{{ pitching_totals.hits__sum}}</td><td>{{ pitching_totals.earned_runs__sum }}</td>
+    <td>{{ pitching_totals.homeruns__sum }}</td><td>{{ pitching_totals.strikeouts__sum }}</td>
+    <td>{{ pitching_totals.walks__sum }}</td><td>{{ pitching_totals.intentional_walks__sum }}</td><td>{{ pitching_totals.era|floatformat:2 }}</td><td>{{ pitching_totals.wild_pitches__sum }}</td>
+    <td>{{ pitching_totals.sac_flies__sum }}</td><td>{{ pitching_totals.sacs_allowed__sum }}</td><td>{{ pitching_totals.batters_faced__sum }}</td><td>{{ pitching_totals.games_finished__sum }}</td>
+   </tr>
+    </table>
+{% endif %}
+{% if batting %}
+<h3>Hitting</h3>
+<table class='table table-striped'>
+    <tr>
+    <th>Year Team</th>
+    <th>League</th>
+    <th>Games Played</th>
+    <th>At Bats</th>
+    <th>Runs</th>
+    <th>Ave</th>
+    <th>Hits</th>
+    <th>Doubles</th>
+    <th>Triples</th>
+    <th>Home Runs</th>
+    <th>RBI</th>
+    <th>Stolen Bases</th>
+    <th>Caught Stealing</th>
+    <th>Walks</th>
+    <th>Strikeouts</th>
+    <th>Intentional Walks</th>
+    <th>Hit By Pitch</th>
+    <th>Sacrifices</th>
+    <th>Sac Flies</th>
+    <th>Double Plays</th>
+    </tr>
+    {% for p in batting %}
+    <tr>
+        <td><a href="{% url 'team_year' p.team_id %}">{{ p.year }} {{ p.team }}</a></td>
+            <td>{{ p.league }}</td>
+        <td>{{ p.games_batting }}</td>
+        <td>{{ p.at_bats }}</td><td>{{ p.runs }}</td><td>{{ p.average|floatformat:3 }}</td>
+        <td>{{ p.hits}}</td><td>{{ p.doubles }}</td><td>{{ p.triples }}</td>
+    <td>{{ p.homeruns }}</td><td>{{ p.rbi }}</td><td>{{ p.stolen_bases }}</td><td>{{ p.caught_stealing }}</td>
+    <td>{{ p.walks }}</td><td>{{ p.strike_outs }}</td><td>{{ p.intentional_walks }}</td><td>{{ p.hit_by_pitch }}</td>
+    <td>{{ p.sac_hits }}</td><td>{{ p.sac_flies }}</td><td>{{ p.double_plays }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>Totals</td><td></td><td>{{ batting_totals.games_batting__sum  }}</td><td>{{ batting_totals.at_bats__sum  }}</td>
+        <td>{{ batting_totals.runs__sum }}<td>{{ batting_totals.ave|floatformat:3 }}</td</td><td>{{ batting_totals.hits__sum  }}</td><td>{{ batting_totals.doubles__sum  }}</td>
+    <td>{{ batting_totals.triples__sum }}</td><td>{{ batting_totals.homeruns__sum }}</td><td>{{ batting_totals.rbi__sum }}</td>
+    <td>{{ batting_totals.stolen_bases__sum }}</td><td>{{ batting_totals.caught_stealing__sum }}</td><td>{{ batting_totals.walks__sum  }}</td>
+    <td>{{ batting_totals.strike_outs__sum }}</td><td>{{ batting_totals.intentional_walks__sum }}</td><td>{{ batting_totals.hit_by_pitch__sum }}</td>
+    <td>{{ batting_totals.sac_hits__sum }}</td><td>{{ batting_totals.sac_flies__sum  }}</td><td>{{ batting_totals.double_plays__sum  }}</td>
+</tr>
+</table>
+{% endif %}
+{% if fielding %}
+<h3>Fielding</h3>
+<table class='table table-striped'>
+    <tr>
+    <th>Year-Team</th>
+    <th>League</th>
+    <th>Position</th>
+    <th>Games</th>
+    <th>Games Started</th>
+    <th>Outs Played</th>
+    <th>Putouts</th>
+    <th>Assists</th>
+    <th>Errors</th>
+    <th>Double Plays</th>
+    <th>Passed Balls</th>
+    <th>Wild Pitches</th>
+    <th>Stolen on</th>
+    <th>Caught Stealing</th>
+    </tr>
+    {% for f in fielding %}
+    <tr>
+    <td><a href="{% url 'team_year' f.team_id %}">{{ f.year }} {{ f.team }}</a></td>
+    <td>{{ f.league }}</td><td>{{ f.position }}</td><td>{{ f.games }}</td>
+    <td>{{ f.games_started }}</td><td>{{ f.outs_played }}</td><td>{{ f.putouts }}</td><td>{{ f.assists }}</td><td>{{ f.errors }}</td>
+    <td>{{ f.double_plays }}</td><td>{{ f.passed_balls }}</td><td>{{ f.wild_pitches }}</td>
+    <td>{{ f.stolen_on }}</td><td>{{ f.caught_stealing }}</td>
+    </tr>
+    {% endfor %}
+    <tr><td>Totals</td><td></td><td></td>
+        <td>{{ fielding_totals.games__sum }}</td><td>{{ fielding_totals.games_started__sum }}</td>
+        <td>{{ fielding_totals.outs_played__sum }}</td>
+        <td>{{ fielding_totals.putouts__sum }}</td>
+        <td>{{ fielding_totals.assists__sum }}</td>
+        <td>{{ fielding_totals.errors__sum }}</td>
+        <td>{{ fielding_totals.double_plays__sum }}</td>
+        <td>{{ fielding_totals.passed_balls__sum }}</td>
+        <td>{{ fielding_totals.wild_pitches__sum }}</td>
+        <td>{{ fielding_totals.stolen_on__sum }}</td>
+        <td>{{ fielding_totals.caught_stealing__sum }}</td>
+</table>
+{% endif %}
+{% endblock %}

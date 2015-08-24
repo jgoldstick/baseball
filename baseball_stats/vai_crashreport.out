@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.4/dist-packages/vai/__init__.py", line 109, in main
+    app.exec_()
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/gui/VApplication.py", line 114, in exec_
+    self.processEvents(True)
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/gui/VApplication.py", line 121, in processEvents
+    self._processKeyEvents()
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/gui/VApplication.py", line 239, in _processKeyEvents
+    self._processSingleKeyEvent(event)
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/gui/VApplication.py", line 262, in _processSingleKeyEvent
+    widget.keyEvent(key_event)
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/gui/widgets/VLineEdit.py", line 130, in keyEvent
+    self.returnPressed.emit()
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/core/VSignal.py", line 25, in emit
+    slot(*args, **kwargs)
+  File "/usr/local/lib/python3.4/dist-packages/vaitk/core/VSignal.py", line 25, in emit
+    slot(*args, **kwargs)
+  File "/usr/local/lib/python3.4/dist-packages/vai/controllers/CommandBarController.py", line 25, in parseCommandBar
+    if self._interpretLine(command_text):
+  File "/usr/local/lib/python3.4/dist-packages/vai/controllers/CommandBarController.py", line 87, in _interpretLine
+    return self._editor_controller.interpretCommandLine(command_text)
+  File "/usr/local/lib/python3.4/dist-packages/vai/controllers/EditorController.py", line 158, in interpretCommandLine
+    plugin_object = self._keyword_to_plugin_cache[keyword]
+KeyError: 'E'

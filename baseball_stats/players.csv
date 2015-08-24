@@ -1,0 +1,12 @@
+auth_group                  baseball_manager          
+auth_group_permissions      baseball_master           
+auth_permission             baseball_pitching         
+auth_user                   baseball_salary           
+auth_user_groups            baseball_team             
+auth_user_user_permissions  baseball_teamfranchise    
+baseball_appearances        csvimport_csvimport       
+baseball_baseballfielding   csvimport_importmodel     
+baseball_batting            django_admin_log          
+baseball_fielding           django_content_type       
+baseball_halloffame         django_session            
+baseball_league             pitching                  

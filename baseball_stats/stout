@@ -1,0 +1,9 @@
+     echo: off
+  explain: off
+  headers: off
+     mode: list
+nullvalue: ""
+   output: stout
+separator: "|"
+    stats: off
+    width: 

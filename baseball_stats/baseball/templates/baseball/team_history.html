@@ -1,0 +1,9 @@
+{% extends "baseball/base.html" %}
+{% block content %}
+<table class='table table-striped'>
+    <tr><th>Year</th><th>Name</th><th>League</th><th>Park Name</th<tr>
+{% for team in teams %}
+<tr><td>{{ team.year }}</td><td><a href="{% url 'baseball.views.team_year' team_id=team.id %} ">{{ team }}</a></td><td>{{ team.league }}</td><td>{{ team.park_name }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}
