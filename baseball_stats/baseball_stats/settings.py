@@ -50,9 +50,9 @@ INSTALLED_APPS = (
     'baseball',
     'django.contrib.humanize',
     'bootstrap3',
-    'debug_toolbar',
-    'django_extensions',
-    'csvimport',
+    #'debug_toolbar',
+    #'django_extensions',
+    #'csvimport',
 )
 
 MIDDLEWARE_CLASSES = (
