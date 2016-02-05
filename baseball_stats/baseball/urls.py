@@ -25,4 +25,6 @@ urlpatterns = patterns('baseball.views',
     url(r'^birth_country/$', 'birth_country', name='birth_country'),
     url(r'^birth_country_by_year/$', 'birth_country_by_year', name='birth_country_by_year'),
     url(r'^post_season/$', 'post_season', name='post_season'),
+    url(r'^chart/$', 'chart', name='chart'),
 )
+

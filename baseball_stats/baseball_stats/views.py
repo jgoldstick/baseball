@@ -12,6 +12,8 @@ def filtered_data_set(data_set, **kwargs):
     returns all data from a model filtered by the attribute values passed as a dictionary
     """
     for k, v in kwargs.items():
+        print "key:", k, " value: ", v
+    print kwargs
     data_set = data_set.objects.filter(**kwargs)
 
     return data_set
@@ -35,16 +37,19 @@ def all_time_(model, category_name, list_size=None):
             except ZeroDivisionError:
                 d['category'] = 0
         data_set = sorted(data_set, key=lambda k: k['category'], reverse=True)
+        print "data_set: ", data_set[:5]
     elif category_name == 'earned_run_average':
         data_set = model.values('player', 'player__name_first',
                             'player__name_last').annotate(runs =Sum('earned_runs'),
                             outs=Sum('outs_pitched')).filter(outs__gt=270)
+        print data_set
         for d in data_set:
             try:
                 d['category'] = 27.0 * d['runs'] / d['outs']
             except ZeroDivisionError:
                 d['category'] = 999.0
         data_set = sorted(data_set, key=lambda k: k['category'])
+        print "data_set: ", data_set[:5]
     else:
         data_set = model.values('player', 'player__name_first',
                             'player__name_last').annotate(category=Sum(category_name)).order_by('-category')
@@ -79,6 +84,7 @@ def batting(request, domain):
         if not category:
             category = "assists"
 
+    print "before initializing FilterForm", query_filter
     if initial_form_values:
         selected_form = FilterForm(initial_form_values)
     else:
@@ -97,6 +103,7 @@ def batting(request, domain):
         if query_filter['league'] == "All":
             query_filter.pop('league')
 
+    print query_filter
     data_set = filtered_data_set(model, **query_filter)
     data_set = all_time_(data_set, category, 50)
     context = {'batting': batting,
@@ -105,6 +112,7 @@ def batting(request, domain):
                }
     context.update(query_filter)
     context.update({'form': selected_form})
+    print "context :", context
     return render_to_response('baseball/batting.html', context)
 
 # pitching and fielding are synonyms for pitching
@@ -149,8 +157,10 @@ def players(request, last_name=None, country=None):
     player = Master.objects.all().order_by("name_last")
     query_filter = dict([(k, v) for k, v in request.GET.items()])
     if query_filter:
+        print query_filter
         players_form = PlayersForm(query_filter)
         player = player.filter(**query_filter)
+        print players_form
     else:
         player = None
         players_form = PlayersForm()
@@ -245,6 +255,7 @@ def player_card(request, player_id):
     hall = HallOfFame.objects.filter(player=player_id).filter(inducted=True)
     if hall:
         hall = hall[0]
+    #print batting[0]
     return render_to_response("baseball/player_card.html",
                               {'player':player, 'batting': batting, 'pitching': pitching,
                                'fielding': fielding, 'player_name': player, 'hall': hall,
@@ -309,21 +320,5 @@ def hall_by_year(request):
 def post_season(request):
     world_series = PostSeasonSeries.objects.filter(playoff_round="WS"
                                                    ).order_by('year')
+    print world_series
     return render_to_response('baseball/world_series.html', {'world_series': world_series })
-
-def chart(request):
-    """
-    example using pygal to print a simple bar chart
-    """
-    import pygal
-
-    line_chart = pygal.Bar(disable_xml_declaration=True, pretty_print=True)
-    line_chart.title = 'Browser usage evolution (in %)'
-    line_chart.x_labels = map(str, range(2002, 2013))
-    line_chart.add('Firefox', [None, None, 0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])
-    line_chart.add('Chrome',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
-    line_chart.add('IE',      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-    line_chart.add('Others',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
-    chart = line_chart.render(is_unicode=True)
-    return render_to_response('baseball/chart.html', {'chart': chart})
-

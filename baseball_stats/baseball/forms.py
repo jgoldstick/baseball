@@ -66,9 +66,7 @@ all_months = [(1, "January"), (2, "February"), (3, "March"), (4, "April"), (5, "
 countries = [(None, "All"), ("USA", "USA"), ("P.R.", "P.R"), ("Cuba", "Cuba")]
 
 countries = Master.objects.values_list('birth_country').distinct().order_by('birth_country')
-print countries
 countries = [(v[0], v[0]) for v in countries]
-print countries
 class BirthdayForm(forms.Form):
     month = forms.ChoiceField(all_months)
     date = forms.ChoiceField(choices=((str(x), x) for x in range(1,32)))
