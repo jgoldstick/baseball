@@ -12,7 +12,7 @@ def filtered_data_set(data_set, **kwargs):
     returns all data from a model filtered by the attribute values passed as a dictionary
     """
     for k, v in kwargs.items():
-    data_set = data_set.objects.filter(**kwargs)
+        data_set = data_set.objects.filter(**kwargs)
 
     return data_set
 
