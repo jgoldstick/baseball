@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render_to_response
 from django.db.models import Max, Sum, Count
-from django.conf import settings
+#from django.conf import settings
 from baseball.models import HallOfFame, Team, Batting, Pitching, Fielding
 from baseball.models import Master, PostSeasonSeries, TeamFranchise
 from baseball.forms import BattingFilterForm, PitchingFilterForm, FieldingFilterForm
@@ -26,7 +26,7 @@ def all_time_(model, category_name, list_size=None):
         """
         get hits and at bats.  c
         """
-        data_set = model.values('player', 'player__name_first',
+        data_set = model.objects.values('player', 'player__name_first',
                             'player__name_last').annotate(at_bats=Sum('at_bats'),
                             hits=Sum('hits')).filter(at_bats__gt=500).order_by('-hits')
         for d in data_set:
@@ -36,7 +36,7 @@ def all_time_(model, category_name, list_size=None):
                 d['category'] = 0
         data_set = sorted(data_set, key=lambda k: k['category'], reverse=True)
     elif category_name == 'earned_run_average':
-        data_set = model.values('player', 'player__name_first',
+        data_set = model.objects.values('player', 'player__name_first',
                             'player__name_last').annotate(runs =Sum('earned_runs'),
                             outs=Sum('outs_pitched')).filter(outs__gt=270)
         for d in data_set:
@@ -46,7 +46,7 @@ def all_time_(model, category_name, list_size=None):
                 d['category'] = 999.0
         data_set = sorted(data_set, key=lambda k: k['category'])
     else:
-        data_set = model.values('player', 'player__name_first',
+        data_set = model.objects.values('player', 'player__name_first',
                             'player__name_last').annotate(category=Sum(category_name)).order_by('-category')
     if list_size:
         return data_set[:list_size]
@@ -115,7 +115,7 @@ def home(request):
     pass
 
 def birth_country(request):
-    countries = Master.objects.values('birth_country').annotate(num_players=(Count('birth_country'))).order_by('num_players')
+    countries = Master.objects.values('birth_country').annotate(num_players=(Count('birth_country'))).order_by('-num_players')
     return render_to_response('baseball/countries.html', {'countries': countries})
 
 def birth_country_by_year(request):
