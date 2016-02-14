@@ -3,4 +3,4 @@
 *.old
 *.pyc
 *.py~
-ropeproject/
+.ropeproject/
