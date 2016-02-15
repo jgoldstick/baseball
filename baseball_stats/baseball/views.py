@@ -1,63 +1,66 @@
 import datetime
 from django.shortcuts import render_to_response
 from django.db.models import Max, Sum, Count
-#from django.conf import settings
 from baseball.models import HallOfFame, Team, Batting, Pitching, Fielding
 from baseball.models import Master, PostSeasonSeries, TeamFranchise
 from baseball.forms import BattingFilterForm, PitchingFilterForm, FieldingFilterForm
 from baseball.forms import BirthdayForm, BirthCountryForm, PlayersForm
 
-def filtered_data_set(data_set, **kwargs):
-    """
-    returns all data from a model filtered by the attribute values passed as a dictionary
-    """
-    for k, v in kwargs.items():
-        data_set = data_set.objects.filter(**kwargs)
-
-    return data_set
+import copy
 
 
 def all_time_(model, category_name, list_size=None):
     """
     generic query returns a ValueQueryset of player name and category sum
     in descending order of length list_size
+    Special categories require calculations instead of summing:
+        avg, earned_run_average
     """
+    # common filter:
+    data_set = model.values('player', 'player__name_first',
+                            'player__name_last')
+
     if category_name == 'avg':
         """
-        get hits and at bats.  c
+        get hits and at_bats. Sum each and take ratio or hits/at_bats
         """
-        data_set = model.objects.values('player', 'player__name_first',
-                            'player__name_last').annotate(at_bats=Sum('at_bats'),
-                            hits=Sum('hits')).filter(at_bats__gt=500).order_by('-hits')
+        data_set = data_set.annotate(at_bats=Sum('at_bats'), hits=Sum('hits')
+                                    ).filter(at_bats__gt=500).order_by('-hits')
         for d in data_set:
             try:
                 d['category'] = d['hits'] / float(d['at_bats'])
             except ZeroDivisionError:
                 d['category'] = 0
         data_set = sorted(data_set, key=lambda k: k['category'], reverse=True)
+
     elif category_name == 'earned_run_average':
-        data_set = model.objects.values('player', 'player__name_first',
-                            'player__name_last').annotate(runs =Sum('earned_runs'),
-                            outs=Sum('outs_pitched')).filter(outs__gt=270)
+        """
+        get outs pitched, and earned runs allowed totals
+        era is 27 * earned runs / outs
+        """
+        data_set = data_set.annotate(runs=Sum('earned_runs'), outs=Sum('outs_pitched')).filter(outs__gt=270).filter(at_bats__gt=500).order_by('-hits')
         for d in data_set:
             try:
                 d['category'] = 27.0 * d['runs'] / d['outs']
             except ZeroDivisionError:
                 d['category'] = 999.0
+                # dummy value for pitcher who gave up runs without getting any
+                # outs
         data_set = sorted(data_set, key=lambda k: k['category'])
     else:
-        data_set = model.objects.values('player', 'player__name_first',
-                            'player__name_last').annotate(category=Sum(category_name)).order_by('-category')
+        data_set = model.values('player', 'player__name_first', 'player__name_last'
+                                ).annotate(category=Sum(category_name)
+                                ).order_by('-category')
     if list_size:
         return data_set[:list_size]
     else:
         return data_set
 
 
-import copy
 def batting(request, domain):
     """
-    Aggregate query for batting, fielding, pitching depending on domain
+    Aggregate query view for batting, fielding, pitching depending on domain
+    domain is one of 'batting', 'pitching' or 'fielding'
     """
     query_filter = dict([(k, v) for k, v in request.GET.items()])
     initial_form_values = copy.deepcopy(query_filter)
@@ -87,21 +90,19 @@ def batting(request, domain):
     if category:
         category_verbose = category.replace("_", " ")
 
-    if query_filter:
-        if query_filter['team__franchise'] == "All":
-            query_filter.pop('team__franchise')
-
-        if query_filter['year'] == "All":
-            query_filter.pop('year')
-
-        if query_filter['league'] == "All":
-            query_filter.pop('league')
-
-    data_set = filtered_data_set(model, **query_filter)
+    for key in ('team__franchise', 'year', 'league'):
+        try:
+            print key, query_filter[key]
+            if query_filter[key] == 'All':
+                query_filter.pop(key, None)
+        except KeyError:
+            pass
+    print "query_filter: ", query_filter
+    data_set = model.objects.filter(**query_filter)
     data_set = all_time_(data_set, category, 50)
     context = {'batting': batting,
-               'data_set' :  data_set[:50],
-               'category' : category_verbose
+               'data_set':  data_set[:50],
+               'category': category_verbose
                }
     context.update(query_filter)
     context.update({'form': selected_form})
