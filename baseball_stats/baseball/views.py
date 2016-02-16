@@ -25,7 +25,7 @@ def all_time_(model, category_name, list_size=None):
         get hits and at_bats. Sum each and take ratio or hits/at_bats
         """
         data_set = data_set.annotate(at_bats=Sum('at_bats'), hits=Sum('hits')
-                                    ).filter(at_bats__gt=500).order_by('-hits')
+                                     ).filter(at_bats__gt=500).order_by('-hits')
         for d in data_set:
             try:
                 d['category'] = d['hits'] / float(d['at_bats'])
@@ -38,7 +38,9 @@ def all_time_(model, category_name, list_size=None):
         get outs pitched, and earned runs allowed totals
         era is 27 * earned runs / outs
         """
-        data_set = data_set.annotate(runs=Sum('earned_runs'), outs=Sum('outs_pitched')).filter(outs__gt=270).filter(at_bats__gt=500).order_by('-hits')
+        data_set = data_set.annotate(runs=Sum('earned_runs'),
+                                     outs=Sum('outs_pitched')
+                                     ).filter(outs__gt=270).filter(at_bats__gt=500).order_by('-hits')
         for d in data_set:
             try:
                 d['category'] = 27.0 * d['runs'] / d['outs']
@@ -50,14 +52,14 @@ def all_time_(model, category_name, list_size=None):
     else:
         data_set = model.values('player', 'player__name_first', 'player__name_last'
                                 ).annotate(category=Sum(category_name)
-                                ).order_by('-category')
+                               ).order_by('-category')
     if list_size:
         return data_set[:list_size]
     else:
         return data_set
 
 
-def batting(request, domain):
+def aggregate_category(request, domain):
     """
     Aggregate query view for batting, fielding, pitching depending on domain
     domain is one of 'batting', 'pitching' or 'fielding'
@@ -92,12 +94,11 @@ def batting(request, domain):
 
     for key in ('team__franchise', 'year', 'league'):
         try:
-            print key, query_filter[key]
             if query_filter[key] == 'All':
                 query_filter.pop(key, None)
         except KeyError:
             pass
-    print "query_filter: ", query_filter
+
     data_set = model.objects.filter(**query_filter)
     data_set = all_time_(data_set, category, 50)
     context = {'batting': batting,
