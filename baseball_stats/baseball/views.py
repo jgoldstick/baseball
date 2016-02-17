@@ -109,10 +109,6 @@ def aggregate_category(request, domain):
     context.update({'form': selected_form})
     return render_to_response('baseball/batting.html', context)
 
-# pitching and fielding are synonyms for pitching
-pitching = batting
-fielding = batting
-
 def home(request):
     pass
 

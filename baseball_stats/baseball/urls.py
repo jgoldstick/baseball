@@ -4,9 +4,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('baseball.views',
-    url(r'^batting/$', 'category_aggregate', {'domain': 'batting'}, name='batting'),
-    url(r'^pitching/$', 'category_aggregate', {'domain': 'pitching'}, name='pitching'),
-                       url(r'^fielding/$', 'category_aggregate', {'domain': 'fielding'}, name='fielding'),
+    url(r'^batting/$', 'aggregate_category', {'domain': 'batting'}, name='batting'),
+    url(r'^pitching/$', 'aggregate_category', {'domain': 'pitching'}, name='pitching'),
+    url(r'^fielding/$', 'aggregate_category', {'domain': 'fielding'}, name='fielding'),
     url(r'^teams/$', 'teams', name='teams'),
     url(r'^teams/active/$', 'active_franchises', name='active_franchises'),
     url(r'^teams/inactive/$', 'inactive_franchises', name='inactive_franchises'),
