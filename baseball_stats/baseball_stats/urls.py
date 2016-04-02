@@ -1,12 +1,12 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from django.contrib import admin
-import baseball
+from baseball.views import home
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     url(r'^admin/', include(admin.site.urls)),
-    # url(r'^$', baseball.home),
+    url(r'^$', home),
     url(r'^stats/', include('baseball.urls')),
-                       )
+]

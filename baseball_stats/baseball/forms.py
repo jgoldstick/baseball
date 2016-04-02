@@ -1,8 +1,8 @@
 from django import forms
 from baseball.models import Master
+import datetime
 
-
-years = [(y, y) for y in reversed(range(1871, 2014))]
+years = [(y, y) for y in reversed(range(1871, datetime.datetime.now().year))]
 years.insert(0, ('All', 'All'))
 teams = [("All", "All"), ("ARI", "Arizona Diamondbacks"),
             ("ATL", "Atlanta Braves"),

@@ -101,7 +101,7 @@ def aggregate_category(request, domain):
 
     data_set = model.objects.filter(**query_filter)
     data_set = all_time_(data_set, category, 50)
-    context = {'batting': batting,
+    context = {'batting': model,
                'data_set':  data_set[:50],
                'category': category_verbose
                }
