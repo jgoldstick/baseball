@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'baseball',
     'django.contrib.humanize',
     'bootstrap3',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'django_extensions',
     # 'csvimport',
 )

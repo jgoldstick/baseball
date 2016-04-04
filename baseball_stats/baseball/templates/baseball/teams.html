@@ -1,7 +1,7 @@
 {% extends "baseball/base.html" %}
 {% block content %}
+<p>Append year to the URL after /standings/ to see results for that year</p>
 <h2>Final Standings -- {{ year }}</h2>
-<ul>
 {% for l in leagues %}
     <h3>{{l}}</h3>
     {% for d in divisions %}
@@ -9,21 +9,21 @@
         {% if l == 'AL' and d in 'E' %}
         <table class="table table-striped">
             {% for team in ALE %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td class="align-right">{{ team.wins }}</td><td class="align-right">{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'AL' and d == 'C' %}
         <table class="table table-striped">
             {% for team in ALC %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td class="align-right" "pull-right">{{ team.wins }}</td><td class="align-right">{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'AL' and d == 'W' %}
         <table class="table table-striped">
             {% for team in ALW %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td class="align-right">{{ team.wins }}</td><td class="align-right">{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         <table class="table table-striped">
@@ -31,42 +31,42 @@
         {% if l in 'AL' and not d  %}
         <table class="table table-striped">
             {% for team in AL %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td class="align-right">{{ team.wins }}</td><td class="align-right">{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'NL' and d == 'E' %}
         <table class="table table-striped">
             {% for team in NLE %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td>{{ team.wins }}</td><td>{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'NL' and d == 'C' %}
         <table class="table table-striped">
             {% for team in NLC %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td>{{ team.wins }}</td><td>{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'NL' and d == 'W' %}
         <table class="table table-striped">
             {% for team in NLW %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td>{{ team.wins }}</td><td>{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'NL' and not d  %}
         <table class="table table-striped">
             {% for team in NL %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td>{{ team.wins }}</td><td>{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
         {% if l == 'FL'  %}
         <table class="table table-striped">
             {% for team in FL %}
-            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td> {{ team.wins }}</td><td>{{ team.losses }}</td> </tr>
+            <tr><td><a href="{% url 'team_year' team.id %}">{{team}}</a></td><td>{{ team.wins }}</td><td>{{ team.losses }}</td></tr>
             {% endfor %}
         </table>
         {% endif %}
